@@ -3,34 +3,38 @@ import "./App.css";
 import { HomePage } from "./components/Home.page";
 import { RQSuperHeroesPage } from "./components/RQSuperHeroes.page";
 import { SuperHeroesPage } from "./components/SuperHeroes.page";
-import { QueryClientProvider, QueryProvider } from "react-query";
+import { QueryClientProvider, QueryClient } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/super-heroes">Traditional Super Heroes</Link>
-            </li>
-            <li>
-              <Link to="/rq-super-heroes">RQ Super Heroes</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path="/super-heroes" element={<SuperHeroesPage />} />
+    <QueryClientProvider client={queryClient} contextSharing={true}>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/super-heroes">Traditional Super Heroes</Link>
+              </li>
+              <li>
+                <Link to="/rq-super-heroes">RQ Super Heroes</Link>
+              </li>
+            </ul>
+          </nav>
+          <Routes>
+            <Route path="/super-heroes" element={<SuperHeroesPage />} />
 
-          <Route path="/rq-super-heroes" element={<RQSuperHeroesPage />} />
+            <Route path="/rq-super-heroes" element={<RQSuperHeroesPage />} />
 
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </div>
-    </Router>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

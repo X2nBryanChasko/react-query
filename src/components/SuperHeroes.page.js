@@ -28,7 +28,7 @@ export const SuperHeroesPage = () => {
 
   return (
     <>
-      <h2>Super Heroes Page</h2>
+      <h2>Super Heroes Page - React UseEffect isLoading Hooks</h2>
       {/* // if "data" has loaded (above) then we'll map over it and return hero.name into the map  */}
       {data.map((hero) => {
         return <div>{hero.name}</div>;

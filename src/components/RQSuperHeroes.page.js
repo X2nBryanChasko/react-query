@@ -20,10 +20,12 @@ export const RQSuperHeroesPage = () => {
     // query will refresh on browse if data is stale, which is the default behavior
 
     {
-      refetchOnMount: true,
-      // refetch on window focus will refresh data any time you click in the window
-      // if you want to get new data regardless of whether data is fresh or stale, set to string 'always'
-      refetchOnWindowFocus: true,
+      // automatically refetch data every 2000 ms
+      // disable with refetchInterval: false
+      //will not refresh windows unless they are in focus
+      refetchInterval: 2000,
+      // to refetch data for window even if not in focus
+      refetchIntervalInBackground: true,
     }
   );
 

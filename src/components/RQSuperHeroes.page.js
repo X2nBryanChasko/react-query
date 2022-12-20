@@ -13,19 +13,14 @@ export const RQSuperHeroesPage = () => {
   // useQuery contains isLoading and data hooks natively.
   // set a unique key super-heroes for the query, create a promise instance object
   // isFetching will help us better track network activity.
-  const { isLoading, data, isError, error, isFetching } = useQuery(
+  // refetch allows us to fetch data on demand with a button implimented below
+  const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
     "super-heroes",
     fetchSuperHeroes,
-    // with refetchOnMount true, useQuery will refresh on update.
-    // query will refresh on browse if data is stale, which is the default behavior
 
     {
-      // automatically refetch data every 2000 ms
-      // disable with refetchInterval: false
-      //will not refresh windows unless they are in focus
-      refetchInterval: 2000,
-      // to refetch data for window even if not in focus
-      refetchIntervalInBackground: true,
+      // do not automatically fetch the data, so we can use a button.
+      enabled: false,
     }
   );
 
@@ -41,6 +36,7 @@ export const RQSuperHeroesPage = () => {
     //<> will enclose the return as a react element, allowing us to script in JSX
     <>
       <h2>Super Heroes Page - React Query</h2>
+      <button onClick={refetch}>Fetch Heroes</button>
       {data?.data.map((hero) => {
         return <div key={hero.name}>{hero.name}</div>;
       })}

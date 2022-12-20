@@ -10,19 +10,30 @@ const fetchSuperHeroes = () => {
 };
 
 export const RQSuperHeroesPage = () => {
-  // useQuery contains isLoading and data hooks natively.
-  // set a unique key super-heroes for the query, create a promise instance object
-  // isFetching will help us better track network activity.
-  // refetch allows us to fetch data on demand with a button implimented below
+  //create callbacks to do something after api data is fetched.
+  const onSuccess = () => {
+    //log our message and the data to the console
+    console.log("Perform side effect after SUCCESS data fetching", data);
+  };
+  //log our message and the error to the console
+  const onError = () => {
+    console.log("Perform Side effect after ERROR data fetching", error);
+  };
+
   const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
     "super-heroes",
     fetchSuperHeroes,
-
+    //specify on success and on error configurations.
     {
-      // do not automatically fetch the data, so we can use a button.
-      enabled: false,
+      // if we had different keys, we would handle this way:
+      // onSuccess: onSuccess,
+      // onError: onError,
+      onSuccess,
+      onError,
     }
   );
+
+  console.log({ isLoading, isFetching });
 
   if ((isLoading, isFetching)) {
     return <h2>Loading ...</h2>;

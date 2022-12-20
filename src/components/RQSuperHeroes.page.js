@@ -16,9 +16,14 @@ export const RQSuperHeroesPage = () => {
   const { isLoading, data, isError, error, isFetching } = useQuery(
     "super-heroes",
     fetchSuperHeroes,
-    //Allowing the data to remain stale for 3000 ms
+    // with refetchOnMount true, useQuery will refresh on update.
+    // query will refresh on browse if data is stale, which is the default behavior
+
     {
-      staleTime: 3000,
+      refetchOnMount: true,
+      // refetch on window focus will refresh data any time you click in the window
+      // if you want to get new data regardless of whether data is fresh or stale, set to string 'always'
+      refetchOnWindowFocus: true,
     }
   );
 

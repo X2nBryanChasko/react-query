@@ -1,44 +1,19 @@
 import React from "react";
-//import useQuery hook from react-query
-import { useQuery } from "react-query";
-import axios from "axios";
-
-// you may need to transform data received from the api to match the front end convention.
-
-const fetchSuperHeroes = () => {
-  return axios.get("http://localhost:4000/superheroes");
-};
+import { useSuperHeroesData } from "../hooks/useSuperHeroesData";
 
 export const RQSuperHeroesPage = () => {
   //create callbacks to do something after api data is fetched.
-  const onSuccess = () => {
+  const onSuccess = (data) => {
     //log our message and the data to the console
     console.log("Perform side effect after SUCCESS data fetching", data);
   };
   //log our message and the error to the console
-  const onError = () => {
+  const onError = (error) => {
     console.log("Perform Side effect after ERROR data fetching", error);
   };
 
-  const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
-    "super-heroes",
-    fetchSuperHeroes,
-    //specify on success and on error configurations.
-    {
-      // if we had different keys, we would handle this way:
-      // onSuccess: onSuccess,
-      // onError: onError,
-      onSuccess,
-      onError,
-      // data is our response, so we can use select to extract the superhero name
-      select: (data) => {
-        //map over the data in hero and return just the name.
-        const superHeroNames = data.data.map((hero) => hero.name);
-        //return our array of superHeroNames
-        return superHeroNames;
-      },
-    }
-  );
+  const { isLoading, data, isError, error, isFetching, refetch } =
+    useSuperHeroesData(onSuccess, onError);
 
   console.log({ isLoading, isFetching });
 

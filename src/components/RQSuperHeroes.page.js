@@ -6,18 +6,23 @@ import axios from "axios";
 //common pattern - fetcher function extrated outside of the usequery hook
 
 const fetchSuperHeroes = () => {
-  return axios.get("http://localhost:4000/superheroes1");
+  return axios.get("http://localhost:4000/superheroes");
 };
 
 export const RQSuperHeroesPage = () => {
   // useQuery contains isLoading and data hooks natively.
   // set a unique key super-heroes for the query, create a promise instance object
-  const { isLoading, data, isError, error } = useQuery(
+  // isFetching will help us better track network activity.
+  const { isLoading, data, isError, error, isFetching } = useQuery(
     "super-heroes",
-    fetchSuperHeroes
+    fetchSuperHeroes,
+    //Allowing the data to remain stale for 3000 ms
+    {
+      staleTime: 3000,
+    }
   );
 
-  if (isLoading) {
+  if ((isLoading, isFetching)) {
     return <h2>Loading ...</h2>;
   }
 

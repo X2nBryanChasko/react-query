@@ -2,18 +2,36 @@
   "superheroes": [
     {
       "id": 1,
-      "name": "Batman The Dark Knight",
-      "alterEgo": "Bruce Wayne"
+      "name": "Doreen Allene Green",
+      "alterEgo": "Squirrel Girl"
     },
     {
       "id": 2,
-      "name": "Superman",
-      "alterEgo": "Clark Kent"
+      "name": "Kamala Khan",
+      "alterEgo": "Ms Marvel"
     },
     {
       "id": 3,
-      "name": "Wonder Woman",
-      "alterEgo": "Princess Diana"
+      "name": "Miles Morales",
+      "alterEgo": "Spider-Man"
+    }
+  ],
+
+  "fSociety": [
+    {
+      "id": 1,
+      "name": "Darlene Alderson",
+      "alterEgo": "Trenton"
+    },
+    {
+      "id": 2,
+      "name": "Elliot Alderson",
+      "alterEgo": "Mr Robot"
+    },
+    {
+      "id": 3,
+      "name": "Tyrell Wellick",
+      "alterEgo": "E-Corp Interim CTO"
     }
   ]
 }

@@ -33,13 +33,9 @@ function App() {
           <Routes>
             <Route
               path="/rq-dependent"
-              element={
-                //in the real world, email would likely be provided by the react context api
-                // lets pretend we have access to the logged in users email, and pass that into our
-                // dependent query component as a prop
-                <DependentQueriesPage email="bryan.chasko@datadel.io" />
-              }
+              element={<DependentQueriesPage email="bryan.chasko@datadel.io" />}
             />
+
             <Route
               path="/rq-dynamic-parallel"
               element={<DynamicParallelPage heroIds={[1, 3]} />}
@@ -50,9 +46,7 @@ function App() {
               element={<RQSuperHeroPage />}
             />
             <Route path="/super-heroes" element={<SuperHeroesPage />} />
-
             <Route path="/rq-super-heroes" element={<RQSuperHeroesPage />} />
-
             <Route path="/" element={<HomePage />} />
           </Routes>
         </div>

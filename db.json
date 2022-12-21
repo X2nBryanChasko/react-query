@@ -33,5 +33,18 @@
       "name": "Tyrell Wellick",
       "alterEgo": "E-Corp Interim CTO"
     }
+  ],
+
+  "users": [
+    {
+      "id": "bryan.chasko@datadel.io",
+      "responsibilityId": "x2nBChasko"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "x2nBChasko",
+      "assignments": ["react", "lambda", "campbell scientific datalogger"]
+    }
   ]
 }

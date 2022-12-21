@@ -8,6 +8,7 @@ import { SuperHeroesPage } from "./components/SuperHeroes.page";
 import { RQSuperHeroPage } from "./components/RQSuperHero.page";
 import { ParallelQueriesPage } from "./components/ParallelQueries.page";
 import { DynamicParallelPage } from "./components/DynamicParallel.page";
+import { DependentQueriesPage } from "./components/DependentQueries.page";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,15 @@ function App() {
             </ul>
           </nav>
           <Routes>
+            <Route
+              path="/rq-dependent"
+              element={
+                //in the real world, email would likely be provided by the react context api
+                // lets pretend we have access to the logged in users email, and pass that into our
+                // dependent query component as a prop
+                <DependentQueriesPage email="bryan.chasko@datadel.io" />
+              }
+            />
             <Route
               path="/rq-dynamic-parallel"
               element={<DynamicParallelPage heroIds={[1, 3]} />}

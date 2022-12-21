@@ -1,4 +1,6 @@
 import React from "react";
+//using react-router, link our components to the ID route we created in app.js
+import { Link } from "react-router-dom";
 import { useSuperHeroesData } from "../hooks/useSuperHeroesData";
 
 export const RQSuperHeroesPage = () => {
@@ -32,14 +34,19 @@ export const RQSuperHeroesPage = () => {
 
       <button onClick={refetch}>Fetch Heroes</button>
 
-      {/*       {data?.data.map((hero) => {
-        return <div key={hero.name}>{hero.name}</div>;
-      })} */}
+      {data?.data.map((hero) => {
+        return (
+          <div key={hero.id}>
+            {/* utilizing react-router we can return the rq-superhero component to get details for an individual hero  */}
+            <Link to={`/rq-super-heroes/${hero.id}`}>{hero.name}</Link>
+          </div>
+        );
+      })}
       {/* // add a data.map for each heroName, returning each heroName 
       for the key heroName. this is reaturning the data object from our superHeroNames variable */}
-      {data.map((heroName) => {
+      {/*        { data.map((heroName) => {
         return <div key={heroName}>{heroName}</div>;
-      })}
+      }) }  */}
     </>
   );
 };

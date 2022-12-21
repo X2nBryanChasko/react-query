@@ -28,13 +28,14 @@ export const useSuperHeroesData = (onSuccess, onError) => {
     {
       onSuccess,
       onError,
+
       // data is our response, so we can use select to extract the superhero name
-      select: (data) => {
+      /*       select: (data) => {
         //map over the data in hero and return just the name.
         const superHeroNames = data.data.map((hero) => hero.name);
         //return our array of superHeroNames
         return superHeroNames;
-      },
+      }, */
     }
   );
 };

@@ -1,4 +1,7 @@
+// to create an input, we'll create two state variables and corresponding setter functions
+// to track hero name and their alter ego
 import { useState } from "react";
+
 import { useQuery } from "react-query";
 import axios from "axios";
 

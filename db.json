@@ -14,9 +14,13 @@
       "id": 3,
       "name": "Miles Morales",
       "alterEgo": "Spider-Man"
+    },
+    {
+      "name": "Lunella Lafayette",
+      "alterEgo": "Moon Girl",
+      "id": 4
     }
   ],
-
   "fSociety": [
     {
       "id": 1,
@@ -43,7 +47,11 @@
   "responsibilities": [
     {
       "id": "x2nBChasko",
-      "assignments": ["react", "vue", "angular"]
+      "assignments": [
+        "react",
+        "vue",
+        "angular"
+      ]
     }
   ],
   "colors": [

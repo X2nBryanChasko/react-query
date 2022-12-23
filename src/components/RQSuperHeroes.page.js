@@ -1,9 +1,25 @@
+/* // we're going to call an api that calls hero nbame and their alter ego and saves it into our db json server
+// via a post request
+// React query uses mutations to useMutaiton hook | 
+// react-query mutations are used to create update or delete data 
+// we'll add the code to our data hook in useSuperHeroesData.js
+*/
+
 import React from "react";
 //using react-router, link our components to the ID route we created in app.js
 import { Link } from "react-router-dom";
-import { useSuperHeroesData } from "../hooks/useSuperHeroesData";
+import {
+  useSuperHeroesData,
+  useAddSuperHeroData,
+} from "../hooks/useSuperHeroesData";
+//import useState to track changes to hero names and their alter ego
+import { useState } from "react";
 
 export const RQSuperHeroesPage = () => {
+  // set up our variable and our setter functions that will track state changes.
+  const [name, setName] = useState("");
+  const [alterEgo, setAlterEgo] = useState("");
+
   //create callbacks to do something after api data is fetched.
   const onSuccess = (data) => {
     //log our message and the data to the console
@@ -14,13 +30,22 @@ export const RQSuperHeroesPage = () => {
     console.log("Perform Side effect after ERROR data fetching", error);
   };
 
-  const { isLoading, data, isError, error, isFetching, refetch } =
-    useSuperHeroesData(onSuccess, onError);
+  const { isLoading, data, isError, error, refetch } = useSuperHeroesData(
+    onSuccess,
+    onError
+  );
 
-  console.log({ isLoading, isFetching });
+  // useMutation will return values which we can destructure, you have to call mutate to make the poste request
+  // we'll add an alias for mutate
+  const { mutate: addHero } = useAddSuperHeroData();
 
-  if ((isLoading, isFetching)) {
-    return <h2>Loading ...</h2>;
+  const handleAddHeroClick = () => {
+    const hero = { name, alterEgo };
+    addHero(hero);
+  };
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
   }
 
   if (isError) {
@@ -29,8 +54,22 @@ export const RQSuperHeroesPage = () => {
 
   return (
     //<> will enclose the return as a react element, allowing us to script in JSX
+    // on input, update the state variables
     <>
       <h2>Super Heroes Page - React Query</h2>
+      <div>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          value={alterEgo}
+          onChange={(e) => setAlterEgo(e.target.value)}
+        />
+        <button onClick={handleAddHeroClick}>Add Hero</button>
+      </div>
 
       <button onClick={refetch}>Fetch Heroes</button>
 

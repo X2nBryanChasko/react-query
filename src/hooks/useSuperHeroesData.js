@@ -54,10 +54,28 @@ export const useAddSuperHeroData = () => {
   const queryClient = useQueryClient();
   ///useMutation has a onSuccess callback hook we can access by adding a second argument
   return useMutation(addSuperHero, {
-    onSuccess: () => {
+    //take advantage of the data return from mutation, so we can utilize data or its alias as a parameter,
+    // data refers to the entire post response
+    onSuccess: (data) => {
+      //The first argument of setQueryData is the query key. We want to update super-heroes function, so super-heroes is our key.
+      // the 2nd argument will be an arrow function that receives our old query data as an argument. we'll call it oldQueryData (foo)
+      queryClient.setQueryData("super-heroes", (oldQueryData) => {
+        // return an object and ... spread out the old query data ...oldQueryData
+
+        // create a return object to store our updated data, in this case we'll append an array to our original data object
+        // the second return contains the results of our mutation response.
+        return {
+          ...oldQueryData,
+
+          data: [...oldQueryData.data, data.data],
+        };
+      });
+
+      //we can do the same thing as below without doing the additional network call, as there is a return from our post.
+      // see above for updated version with less calls
       // when the mutation succeeds, we want to invalidate the super heroes method
       // pass in the key we specified in our fetcher function.
-      queryClient.invalidateQueries("super-heroes");
+      /* queryClient.invalidateQueries("super-heroes"); */
     },
   });
   // useMutation doesn't need a key

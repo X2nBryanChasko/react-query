@@ -5,6 +5,8 @@
 // we'll add the code to our data hook in useSuperHeroesData.js
 */
 
+// query invalidation will update the state with refetched data automatically
+
 import React from "react";
 //using react-router, link our components to the ID route we created in app.js
 import { Link } from "react-router-dom";

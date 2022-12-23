@@ -8,7 +8,10 @@
 
 //import useQuery and useMutation hook from react-query
 // useMutation is used to create update or delete data, useQuery to get data
-import { useQuery, useMutation } from "react-query";
+
+// for query invalidation, we'll get access to the query client instance
+
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 
 const fetchSuperHeroes = () => {
@@ -48,8 +51,16 @@ export const useSuperHeroesData = (onSuccess, onError) => {
 // custom usemutation hook, which we will ned to call and pass data from the component
 // we will import into RQSuperHeroesPage.js
 export const useAddSuperHeroData = () => {
+  const queryClient = useQueryClient();
+  ///useMutation has a onSuccess callback hook we can access by adding a second argument
+  return useMutation(addSuperHero, {
+    onSuccess: () => {
+      // when the mutation succeeds, we want to invalidate the super heroes method
+      // pass in the key we specified in our fetcher function.
+      queryClient.invalidateQueries("super-heroes");
+    },
+  });
   // useMutation doesn't need a key
   // first argument is the function that will return data to the backend addSuperHero
   // second argument is a mutation function, which will be a second arrow function
-  return useMutation(addSuperHero);
 };

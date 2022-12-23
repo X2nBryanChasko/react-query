@@ -1,3 +1,6 @@
+# react-query v3 references
+this is non-production code meant only to provide an example of how react-query will interact with strings of json content. requires yarn serve-json (install it first) and yarn start once youv'e installed dependencies alot of folks say create-react-app is (fill in the criticism of their choice), but it's a simple install to get up and running with the project.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

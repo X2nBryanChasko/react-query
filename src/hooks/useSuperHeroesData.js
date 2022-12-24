@@ -78,7 +78,4 @@ export const useAddSuperHeroData = () => {
       /* queryClient.invalidateQueries("super-heroes"); */
     },
   });
-  // useMutation doesn't need a key
-  // first argument is the function that will return data to the backend addSuperHero
-  // second argument is a mutation function, which will be a second arrow function
 };

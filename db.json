@@ -29,6 +29,11 @@
       "name": "Carol Danvers",
       "alterEgo": "Captain Marvel",
       "id": 6
+    },
+    {
+      "name": "Taneleer Tivan",
+      "alterEgo": "The Collector",
+      "id": 7
     }
   ],
   "fSociety": [

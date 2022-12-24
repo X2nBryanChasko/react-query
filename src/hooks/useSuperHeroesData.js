@@ -1,15 +1,5 @@
-// creating custom query hooks involves  3 steps
-// 1 define fetcher function
-// wrap the usequery hook
-// arguments if necessary.
-
-//file name convention (personal preference example) - use to indicate this file is a hook
-// list of super heroes in our case, and we are using this hook for remote Data work.
-
-//import useQuery and useMutation hook from react-query
-// useMutation is used to create update or delete data, useQuery to get data
-
-// for query invalidation, we'll get access to the query client instance
+//impimenting optimistic updates with 3 callbacks
+// onMutate, onError, onSettled
 
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
@@ -18,12 +8,6 @@ const fetchSuperHeroes = () => {
   return axios.get("http://localhost:4000/superheroes");
 };
 
-//wrapper for our useQuery hook
-// placing onSuccess and onError as parameters rather than defining them allows
-// calling error handling at the component level.
-// the error handling could be handled at the object level
-// rather than passing them through parameters.
-// mutation function
 const addSuperHero = (hero) => {
   return axios.post("http://localhost:4000/superheroes", hero);
 };
@@ -32,50 +16,60 @@ export const useSuperHeroesData = (onSuccess, onError) => {
   return useQuery(
     "super-heroes",
     fetchSuperHeroes,
-    //specify on success and on error configurations.
+
     {
       onSuccess,
       onError,
-
-      // data is our response, so we can use select to extract the superhero name
-      /*       select: (data) => {
-        //map over the data in hero and return just the name.
-        const superHeroNames = data.data.map((hero) => hero.name);
-        //return our array of superHeroNames
-        return superHeroNames;
-      }, */
     }
   );
 };
 
-// custom usemutation hook, which we will ned to call and pass data from the component
-// we will import into RQSuperHeroesPage.js
 export const useAddSuperHeroData = () => {
   const queryClient = useQueryClient();
-  ///useMutation has a onSuccess callback hook we can access by adding a second argument
-  return useMutation(addSuperHero, {
-    //take advantage of the data return from mutation, so we can utilize data or its alias as a parameter,
-    // data refers to the entire post response
-    onSuccess: (data) => {
-      //The first argument of setQueryData is the query key. We want to update super-heroes function, so super-heroes is our key.
-      // the 2nd argument will be an arrow function that receives our old query data as an argument. we'll call it oldQueryData (foo)
-      queryClient.setQueryData("super-heroes", (oldQueryData) => {
-        // return an object and ... spread out the old query data ...oldQueryData
 
-        // create a return object to store our updated data, in this case we'll append an array to our original data object
-        // the second return contains the results of our mutation response.
+  return useMutation(addSuperHero, {
+    //onMutate is called before the mutation is fired and receives the same variables as the mutation function
+    //in ourcase, the new hero we want to add as newHero
+    // we'll cancel outgoing refetches so they dont overwrite our optimistic update, via cancelAueries
+    // from queryClient . We'll need to make our onmutate function asynchronous for await to be allowed
+    onMutate: async (newHero) => {
+      await queryClient.cancelQueries("super-heroes");
+      const previousHeroData = queryClient.getQueryData("super-heroes");
+      queryClient.setQueryData("super-heroes", (oldQueryData) => {
+        return {
+          ...oldQueryData,
+          data: [
+            //when we are getting new heroes, we've defined the name and alter ego but not id
+            // so we'll set an id for each newhero object returned, giving us just a
+            //sequential number, which is not a replacement for a true UUID
+            { id: oldQueryData?.data?.length + 1, ...newHero },
+          ],
+        };
+      });
+      //  return an object with our previous hero data, to rollback mutations in case the post errors out
+      return {
+        previousHeroData,
+      };
+    },
+
+    // define onError callback, with 3 arguments. the error that we encountered, the variables passed into mutation (hero name, alter ego), and
+    // context which contains additional mutaiton information. we're only using the later to execute a callback
+    //when there is an error, and will put _ in front of the first 2 arguments to ignore them.
+    onError: (_error, _hero, context) => {
+      queryClient.setQueryData("super-heroes", context.previousHeroData);
+    },
+    //call when successful or error, to refetch the superheroes
+    onSettled: () => {
+      queryClient.invalidateQueries("super-heroes");
+    },
+    /* onSuccess: (data) => {
+      queryClient.setQueryData("super-heroes", (oldQueryData) => {
         return {
           ...oldQueryData,
 
           data: [...oldQueryData.data, data.data],
         };
       });
-
-      //we can do the same thing as below without doing the additional network call, as there is a return from our post.
-      // see above for updated version with less calls
-      // when the mutation succeeds, we want to invalidate the super heroes method
-      // pass in the key we specified in our fetcher function.
-      /* queryClient.invalidateQueries("super-heroes"); */
-    },
+    }, */
   });
 };
